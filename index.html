@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URL Shortener</title>
+
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+
+    .container{
+      background:white;
+      padding:30px;
+      width:400px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+      text-align:center;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      margin-top:10px;
+      border:1px solid #ccc;
+      border-radius:5px;
+    }
+
+    button{
+      margin-top:15px;
+      padding:12px 20px;
+      background:#007bff;
+      color:white;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+    }
+
+    button:hover{
+      background:#0056b3;
+    }
+
+    .result{
+      margin-top:20px;
+      word-break: break-all;
+    }
+
+    a{
+      color:#007bff;
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Simple URL Shortener</h2>
+
+  <input
+    type="text"
+    id="longUrl"
+    placeholder="Enter Long URL"
+  />
+
+  <button onclick="shortenURL()">
+    Shorten URL
+  </button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+
+  // Redirect Logic
+  const path = window.location.hash.substring(1);
+
+  if(path){
+    const urls = JSON.parse(localStorage.getItem("urls")) || {};
+
+    if(urls[path]){
+      window.location.href = urls[path];
+    }
+  }
+
+  function generateCode(length = 6){
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    let code = "";
+
+    for(let i = 0; i < length; i++){
+      code += chars.charAt(
+        Math.floor(Math.random() * chars.length)
+      );
+    }
+
+    return code;
+  }
+
+  function shortenURL(){
+
+    const longUrl =
+      document.getElementById("longUrl").value;
+
+    if(longUrl === ""){
+      alert("Please enter a URL");
+      return;
+    }
+
+    let urls =
+      JSON.parse(localStorage.getItem("urls")) || {};
+
+    let shortCode = generateCode();
+
+    urls[shortCode] = longUrl;
+
+    localStorage.setItem(
+      "urls",
+      JSON.stringify(urls)
+    );
+
+    const shortURL =
+      window.location.origin +
+      window.location.pathname +
+      "#" +
+      shortCode;
+
+    document.getElementById("result").innerHTML = `
+      <p><strong>Short URL:</strong></p>
+      <a href="${shortURL}" target="_blank">
+        ${shortURL}
+      </a>
+    `;
+  }
+
+</script>
+
+</body>
+</html>
