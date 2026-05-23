@@ -1,1 +1,1 @@
-# CodeAlpha_Simlpe-URL-Project
+A basic URL Shortener web application built using HTML, CSS, and JavaScript. This project allows users to convert long URLs into short and easy-to-share links through a simple and user-friendly interface. It is designed to demonstrate frontend development concepts, user input handling, and basic link management functionality.# CodeAlpha_Simlpe-URL-Project
